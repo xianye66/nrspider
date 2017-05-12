@@ -7,9 +7,10 @@ import (
 	"fmt"
 )
 
-type InfoArticle struct {
+type ArticleInfo struct {
 	Title string
 	Keywords []string
+	KeywordsStr string
 	Describe string
 	From string
 	PublicDate string
@@ -17,7 +18,7 @@ type InfoArticle struct {
 	Content string
 }
 
-func (artc *InfoArticle) FindTileByTitle(replaceStr string,doc *goquery.Document){
+func (artc *ArticleInfo) FindTileByTitle(replaceStr string,doc *goquery.Document){
 	title := ""
 	titleElement := doc.Find("title")
 	if titleElement != nil{
@@ -27,7 +28,7 @@ func (artc *InfoArticle) FindTileByTitle(replaceStr string,doc *goquery.Document
 	artc.Title = title
 }
 
-func (artc *InfoArticle) FindTileByH1(doc *goquery.Document) {
+func (artc *ArticleInfo) FindTileByH1(doc *goquery.Document) {
 	title := ""
 	titleElement := doc.Find("H1").Eq(0)
 	if titleElement == nil{
@@ -36,7 +37,7 @@ func (artc *InfoArticle) FindTileByH1(doc *goquery.Document) {
 	artc.Title = title
 }
 
-func (artc *InfoArticle) FindDescribe(doc *goquery.Document){
+func (artc *ArticleInfo) FindDescribe(doc *goquery.Document){
 	doc.Find("meta").Each(func(index int,item *goquery.Selection) {
 		name,exist := item.Attr("name")
 		if exist && name == "description"{
@@ -50,12 +51,13 @@ func (artc *InfoArticle) FindDescribe(doc *goquery.Document){
 	})
 }
 
-func (artc *InfoArticle) FindKeywords(doc *goquery.Document) {
+func (artc *ArticleInfo) FindKeywords(doc *goquery.Document) {
 	doc.Find("meta").Each(func(index int,item *goquery.Selection) {
 		name,exist := item.Attr("name")
 		if exist && name == "keywords"{
 			keywordStr,exist :=item.Attr("content")
 			if exist{
+				artc.KeywordsStr = keywordStr
 				artc.Keywords = strings.Split(keywordStr,",")
 				return
 			}
@@ -64,7 +66,7 @@ func (artc *InfoArticle) FindKeywords(doc *goquery.Document) {
 	})
 }
 
-func (artc *InfoArticle) String() string {
+func (artc *ArticleInfo) String() string {
 	str := fmt.Sprintf(`
 	title: %s
 	Describe:%s

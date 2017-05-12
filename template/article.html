@@ -1,0 +1,16 @@
+<html>
+<header>
+    <title>{{.Title}} </title>
+    <meta name="keywords" content="{{.KeywordsStr}}">
+    <meta name="description" content="{{.Describe}}">
+</header>
+<body>
+<div class="content">
+{{.Content | test}}
+</div>
+<span class="from">{{.From}} </span>
+<span class="Author">{{.Author}} </span>
+<span class="PublicDate">{{.PublicDate}} </span>
+</body>
+</html>
+

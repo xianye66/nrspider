@@ -5,6 +5,8 @@ import (
 	"nrspider/article"
 	"strings"
 	"net/url"
+	"nrspider/store"
+
 )
 
 type YiCaiTool struct {
@@ -15,15 +17,19 @@ func (yct *YiCaiTool) Extract(doc *goquery.Document, url url.URL)  {
 	if !strings.Contains(url.String(),".html") {
 		return
 	}
-	atc := new(article.InfoArticle)
+	atc := new(article.ArticleInfo)
 	atc.FindTileByTitle("_第一财经",doc)
 	atc.FindDescribe(doc)
 	atc.FindKeywords(doc)
+
 	//atc.FindTileByH1(doc)
 	atc.Author = yct.findAuthor(doc)
 	atc.PublicDate = yct.findPublicDate(doc)
 	atc.Content = yct.findContent(doc)
+	atc.From = "第一财经"
 	println(atc.String())
+	store.Store_article(*atc)
+	println(1)
 }
 
 func (yct *YiCaiTool) findContent(doc *goquery.Document) string {
@@ -48,9 +54,12 @@ func (s *YiCaiTool) UrlRule(url url.URL) bool {
 func (yct *YiCaiTool) findAuthor(doc *goquery.Document) string  {
 	author := ""
 	authorElement := doc.Find("h3.f-ff1.f-fwn.f-fs14")
-	if authorElement != nil{
-		author = strings.Replace(authorElement.Text(),"编辑：","",0)
-	}
+	authorElement.Each(func(index int,item *goquery.Selection) {
+		if strings.Contains(item.Text(),"编辑"){
+			author = strings.Replace(item.Text(),"编辑：","",1)
+		}
+	})
+
 	return author
 }
 

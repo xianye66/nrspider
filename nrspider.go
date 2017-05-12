@@ -2,10 +2,15 @@ package main
 
 import (
 	"github.com/PuerkitoBio/gocrawl"
+
 	"nrspider/extender"
 	"time"
 	"nrspider/spidertools"
 )
+
+
+
+
 
 func main(){
 	extender := extender.MyExtender{SpiderTool: &spidertools.YiCaiTool{}}

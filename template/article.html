@@ -6,7 +6,7 @@
 </header>
 <body>
 <div class="content">
-{{.Content | test}}
+{{.Content | unescaped}}
 </div>
 <span class="from">{{.From}} </span>
 <span class="Author">{{.Author}} </span>

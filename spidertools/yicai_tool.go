@@ -28,7 +28,7 @@ func (yct *YiCaiTool) Extract(doc *goquery.Document, url url.URL)  {
 	atc.Content = yct.findContent(doc)
 	atc.From = "第一财经"
 	println(atc.String())
-	store.Store_article(*atc)
+	store.ArticleStoreAsFile(*atc)
 	println(1)
 }
 

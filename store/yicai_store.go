@@ -10,8 +10,8 @@ import (
 
 func unescaped (x string) interface{} { return template.HTML(x) }
 
-func Store_article(art article.ArticleInfo){
-	t := template.New("article.html").Funcs(template.FuncMap{"test": unescaped})
+func ArticleStoreAsFile(art article.ArticleInfo){
+	t := template.New("article.html").Funcs(template.FuncMap{"unescaped": unescaped})
 	t,err := t.ParseFiles("template/article.html")
 	errorUtil.CheckErrorExit(err)
 	errorUtil.CheckErrorExit(t.Execute(os.Stdout,art))
